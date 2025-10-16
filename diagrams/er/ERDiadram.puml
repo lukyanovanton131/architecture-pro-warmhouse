@@ -1,0 +1,79 @@
+@startuml
+entity "User" {
+  * id : NUMBER
+  --
+  username : VARCHAR
+  email : VARCHAR
+  password : VARCHAR
+  create_at: DATETIME
+}
+
+entity "Device" {
+  * id : NUMBER
+  --
+  * type_id : NUMBER <FK>>
+  * house_id : NUMBER <FK>>
+  serial_number : VARCHAR
+  status: VARCHAR
+  create_at: DATETIME
+}
+
+entity "DeviceType" {
+  * id : NUMBER
+  --
+  name : VARCHAR
+  create_at: DATETIME
+}
+
+entity "Sensor" {
+  * id : NUMBER
+  --
+  unit : VARCHAR
+  *  type_id : NUMBER <FK>>
+  * device_id : NUMBER <FK>>
+  value : FLOAT
+  status: VARCHAR
+  location: VARCHAR
+  last_update: DATETIME
+  create_at: DATETIME
+}
+
+entity "SensorType" {
+  * id : NUMBER
+  --
+  name: VARCHAR
+  create_at: DATETIME
+}
+
+entity "TelemetryData" {
+  * id : NUMBER
+  --
+  unit : VARCHAR
+  * sensor_id : NUMBER <FK>>
+  value : FLOAT
+  create_at: DATETIME
+}
+
+entity "House" {
+  * id : NUMBER
+  --
+  *  adr_point_id : NUMBER <FK>>
+  *  user_id : NUMBER <<FK>>
+  create_at: DATETIME
+}
+
+entity "AdrPoint" {
+  * id : NUMBER
+  --
+  geoloc : GEOMETRY
+  create_at: DATETIME
+}
+
+"User" ||--|{ "House"
+"House" ||--|{ "Device"
+"Device" ||--|{ "Sensor"
+"Device" }|--|| "DeviceType"
+"Sensor" }|--|| "SensorType"
+"Sensor" ||--|{ "TelemetryData"
+"AdrPoint" ||--|| "TelemetryData"
+@enduml
