@@ -60,13 +60,13 @@
 
 **Диаграмма компонентов (Components)**
 
-[C4 DeviceControllApp Component Diagram](./diagrams/components/DeviceControlAppComponents.puml)
+- [C4 DeviceControllApp Component Diagram](./diagrams/components/DeviceControlAppComponents.puml)
 
-[C4 DeviceStateManagerApp Component Diagram](./diagrams/components/DeviceStateManagerAppComponents.puml)
+- [C4 DeviceRegistryApp Component Diagram](./diagrams/components/DeviceStateManagerAppComponents.puml)
 
-[C4 TelemetryCollectorApp Component Diagram](./diagrams/components/TelemetryCollectorAppComponents.puml)
+- [C4 TelemetryCollectorApp Component Diagram](./diagrams/components/TelemetryCollectorAppComponents.puml)
 
-[C4 WebAppComponents.puml Component Diagram](./diagrams/components/WebAppComponents.puml)
+- [C4 WebAppComponents.puml Component Diagram](./diagrams/components/WebAppComponents.puml)
 
 **Диаграмма кода (Code)**
 
@@ -74,15 +74,30 @@
 
 # Задание 3. Разработка ER-диаграммы
 
-Добавьте сюда ER-диаграмму. Она должна отражать ключевые сущности системы, их атрибуты и тип связей между ними.
+[ER-диаграмма](./diagrams/er/ERDiagram.puml)
 
 # Задание 4. Создание и документирование API
+
 
 ### 1. Тип API
 
 Укажите, какой тип API вы будете использовать для взаимодействия микросервисов. Объясните своё решение.
+Для взаимодействия микросервисов используетя:
+ - синхронное API с использованием архитектурного стиля REST 
+ - асинхронное API через брокер сообщений Kafka
 
-### 2. Документация API
+Синхронный вариант используется там где необходимо сразу узнать о результате выполнения запроса. 
+Например, пользователь шлет запрос на включение устройства. В этом случае более дружественный вариант взаимодействия 
+с ним будет сразу сообщить об успехе или о проблемах. Если сервис получит команду на включение устройства в будущем,
+то это может быть даже опасно, например открытие ворот.
+
+Асинхронный вариант лучше подойдет для сбора данных телеметрии, тут их можно обрабатывать потоком, например Kafka Stream.
+
+### 2. Документация 
+
+- [MessageBus](./src/api-spec/TelemetryCollectorApp.yaml)
+- [DeviceRegistryApp](./api-spec/DeviceRegistryApp.yaml)
+- [DeviceRegistryApp](./api-spec/DeviceRegistryApp.yaml)
 
 Здесь приложите ссылки на документацию API для микросервисов, которые вы спроектировали в первой части проектной работы. Для документирования используйте Swagger/OpenAPI или AsyncAPI.
 

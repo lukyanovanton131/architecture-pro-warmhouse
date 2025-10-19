@@ -14,7 +14,7 @@ entity "Device" {
   * type_id : NUMBER <FK>>
   * house_id : NUMBER <FK>>
   serial_number : VARCHAR
-  status: VARCHAR
+  state: VARCHAR
   create_at: DATETIME
 }
 
@@ -32,7 +32,6 @@ entity "Sensor" {
   *  type_id : NUMBER <FK>>
   * device_id : NUMBER <FK>>
   value : FLOAT
-  status: VARCHAR
   location: VARCHAR
   last_update: DATETIME
   create_at: DATETIME
@@ -69,6 +68,11 @@ entity "AdrPoint" {
   create_at: DATETIME
 }
 
+entity "UserDevice" {
+  * user_id : NUMBER
+  * device_id : NUMBER
+}
+
 "User" ||--|{ "House"
 "House" ||--|{ "Device"
 "Device" ||--|{ "Sensor"
@@ -76,4 +80,6 @@ entity "AdrPoint" {
 "Sensor" }|--|| "SensorType"
 "Sensor" ||--|{ "TelemetryData"
 "AdrPoint" ||--|| "TelemetryData"
+"UserDevice" }|--|{"User"
+"UserDevice" }|--|{ "Device"
 @enduml

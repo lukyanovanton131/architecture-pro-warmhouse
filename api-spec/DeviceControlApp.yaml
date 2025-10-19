@@ -1,0 +1,136 @@
+openapi: 3.0.3
+info:
+  title: Device Contorl API
+  version: 1.0.0
+  description: API для управления устройствами через реле
+
+servers:
+  - url: https://api.example.com/v1
+    description: Production server
+  - url: https://staging-api.example.com/v1
+    description: Staging server
+
+paths:
+  /command:
+    post:
+      summary: Отправить команду управления устройством
+      description: Отправляет команду управления на конкретное реле устройства с указанием управляющего воздействия
+      operationId: sendControlCommand
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ControlCommand'
+            examples:
+              relayOn:
+                summary: Включение реле
+                value:
+                  relayId: "915751F5-A203-48F2-8921-6589CB22D15C"
+                  value: 1.0
+              relayOff:
+                summary: Выключение реле
+                value:
+                  relayId: "6C521F13-60D3-430F-8197-5D47D0A47D15"
+                  value: 0.0
+              analogControl:
+                summary: Аналоговое управление
+                value:
+                  relayId: "E95A1DB2-53A1-49E0-BCEC-6C7E82373B4A"
+                  value: 0.75
+      responses:
+        '200':
+          description: Команда успешно выполнена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandResponse'
+        '400':
+          description: Неверный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '404':
+          description: Реле не найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+
+components:
+  schemas:
+    ControlCommand:
+      type: object
+      required:
+        - relayId
+        - value
+      properties:
+        relayId:
+          type: string
+          format: uuid
+          description: Уникальный идентификатор реле управления
+          example: "C32461CB-45BD-45C4-9098-BC0660BB1420"
+        value:
+          type: number
+          format: float
+          description: Значение управляющего воздействия
+          example: 1.0
+          minimum: 0.0
+          maximum: 1.0
+      additionalProperties: false
+
+    CommandResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Статус выполнения команды
+          enum: [success, error]
+          example: "success"
+        message:
+          type: string
+          description: Сообщение о результате выполнения
+          example: "Command executed successfully"
+        relayId:
+          type: string
+          description: Идентификатор реле
+          example: "relay_1"
+        value:
+          type: number
+          format: float
+          description: Установленное значение
+          example: 1.0
+        timestamp:
+          type: string
+          format: date-time
+          description: Время выполнения команды
+          example: "2024-01-15T10:30:00Z"
+
+          
+    # RFC 9457 (Problem Details)
+    ProblemDetail:
+      type: object
+      required: [type, title, status]
+      additionalProperties: true
+      properties:
+        type:     { type: string, format: uri, example: "urn:errors:RELAY_NOT_FOUND" }
+        title:    { type: string }
+        status:   { type: integer, example: 404 }
+        detail:   { type: string, example: "Реле не найдено." }
+        code:     { type: string, example: "RELAY_NOT_FOUND" }
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - BearerAuth: []

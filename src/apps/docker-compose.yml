@@ -12,8 +12,7 @@ services:
       start_period: 30s
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: smarthome
+      POSTGRES_PASSWORD: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./smart_home/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -29,7 +28,7 @@ services:
       postgres:
         condition: service_healthy
     ports:
-      - "8081:8080"
+      - "8081:8081"
     networks:
       - smarthome-network
 
@@ -54,7 +53,6 @@ services:
       
 volumes:
   postgres_data:
-    driver: local
 networks:
   smarthome-network:
     driver: bridge

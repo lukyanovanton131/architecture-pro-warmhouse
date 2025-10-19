@@ -1,0 +1,62 @@
+asyncapi: 3.0.0
+info:
+  title: Telemetry Collector API
+  version: 1.0.0
+  description: API для сбора и обработки телеметрии с датчиков через Kafka
+
+servers:
+  production:
+    host: kafka-broker:9092
+    protocol: kafka
+    description: Production Kafka broker
+
+operations:
+  publishTelemetry:
+    action: send
+    channel:
+      $ref: '#/channels/telemetryData'
+    messages:
+      - $ref: '#/components/messages/TelemetryData'
+
+  subscribeTelemetry:
+    action: receive
+    channel:
+      $ref: '#/channels/telemetryData'
+    messages:
+      - $ref: '#/components/messages/TelemetryData'
+
+channels:
+  telemetryData:
+    address: telemetry-data
+    messages:
+      telemetryData:
+        $ref: '#/components/messages/TelemetryData'
+
+components:
+  messages:
+    TelemetryData:
+      name: TelemetryData
+      title: Sensor telemetry data
+      summary: Сообщение с данными телеметрии от датчика
+      payload:
+        type: object
+        required:
+          - sensorId
+          - value
+          - unit
+        properties:
+          sensorId:
+            type: string
+            format: float
+            description: Уникальный идентификатор датчика
+            examples: [151-01, 22, 45-03]
+          value:
+            type: number
+            format: float
+            description: Измеренное значение
+            examples: [25.4, -10.5, 100.0]
+          unit:
+            type: string
+            description: Единицы измерения
+            examples: ["celsius", "psi", "km/h"]
+      contentType: application/json

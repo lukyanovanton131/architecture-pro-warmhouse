@@ -1,3 +1,6 @@
+using ArchitecturePro;
+using Microsoft.AspNetCore.Mvc;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -14,11 +17,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 
-
-
-app.MapGet("/temperature", (string location) =>
+app.MapGet("/temperature", ([FromQuery] string location) =>
     {
         if (string.IsNullOrWhiteSpace(location))
         {
@@ -27,7 +27,16 @@ app.MapGet("/temperature", (string location) =>
         var random = new Random();
         var temperature = random.Next(-50, 50); // Диапазон от -20°C до 40°C
     
-        return Results.Ok(temperature);
+        return Results.Ok(new TemperatureResponse()
+        {
+            Value = temperature,
+            Unit = "°C",
+            Description = "",
+            SensorID = SensoreIdProvider.Get(location),
+            SensorType = "temperature",
+            Status = "active",
+            Timestamp = DateTime.Now
+        });
     })
     .WithName("GetTemperature")
     .WithOpenApi();

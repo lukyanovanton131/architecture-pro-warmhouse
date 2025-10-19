@@ -15,7 +15,7 @@ System(WarmhouseSystem, "Warmhouse System", "Система управления
 Container_Boundary(WarmhouseSystem, "Warmhouse System") {
   Container(WebApp, "Web приложение", ".net", "Обрабатывает взаимодействие с пользователем")
   Container(DeviceControlApp, "Сервис управления устройствами", "Go", "Управление пользователями своими устройствами")
-  Container(DeviceStateManagerApp, "Сервис состояния устройства", "Go", "Обновляет показатели устройств")
+  Container(DeviceRegistryApp, "Сервис реестра устройства", "Go", "Обновляет показатели устройств")
   Container(TelemetryCollectorApp, "Сервис телеметрии", ".net", "Сбор данных телеметрии с устройств")
   
   Container(Database, "Database", "PostgreSQL", "Хранение данных с датчиков устройств")
@@ -27,12 +27,13 @@ Rel(user, WebApp, "Использует систему")
 Rel(admin, WebApp,"Управляет системой")
 Rel(WebApp, Database,"Чтение и запись данных пользователя")
 Rel(WebApp, DeviceControlApp,"Отправка команд управления устройствами")
-Rel(WebApp, DeviceStateManagerApp,"Получение информации об устройстве")
+Rel(WebApp, DeviceRegistryApp,"Получение информации об устройстве")
 Rel(WebApp, Database,"Чтение и запись данных администратора")
 Rel(TelemetryCollectorApp, sensor,"Запрашивает данные телеметрии")
 Rel(TelemetryCollectorApp, MessageBus,"Запись данных телеметрии")
 Rel(DeviceControlApp, relay,"Управление устройствами")
-Rel(DeviceStateManagerApp, Database,"Обновляет состояние показания датчиков")
-Rel(DeviceStateManagerApp, MessageBus,"Читает данные телеметрии")
+Rel(DeviceRegistryApp, Database,"Обновляет состояние показания датчиков")
+Rel(DeviceRegistryApp, MessageBus,"Читает данные телеметрии")
+Rel(DeviceControlApp, DeviceRegistryApp,"Читает инфо об устройстве")
 
 @enduml
