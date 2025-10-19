@@ -49,7 +49,7 @@ components:
             type: string
             format: float
             description: Уникальный идентификатор датчика
-            examples: [151-01, 22, 45-03]
+            examples: ['5BE95853-EFC4-4314-9DBB-F21E702B0762']
           value:
             type: number
             format: float
@@ -58,5 +58,5 @@ components:
           unit:
             type: string
             description: Единицы измерения
-            examples: ["celsius", "psi", "km/h"]
+            examples: ["°C", "psi", "km/h"]
       contentType: application/json

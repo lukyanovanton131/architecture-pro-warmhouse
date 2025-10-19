@@ -10,12 +10,13 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("TemperatureApi")]
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("dotnet-TelemetryCollectorApp-8c897aeb-ba35-4402-b3d0-c983e46a53c0")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("TelemetryCollectorApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+afd9e2d95232afa903534630001eeb7316ba0e5f")]
-[assembly: System.Reflection.AssemblyProductAttribute("TemperatureApi")]
-[assembly: System.Reflection.AssemblyTitleAttribute("TemperatureApi")]
+[assembly: System.Reflection.AssemblyProductAttribute("TelemetryCollectorApp")]
+[assembly: System.Reflection.AssemblyTitleAttribute("TelemetryCollectorApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Создано классом WriteCodeFragment MSBuild.

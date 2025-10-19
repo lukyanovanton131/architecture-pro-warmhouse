@@ -10,12 +10,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("TemperatureApi")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("DeviceControlApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+afd9e2d95232afa903534630001eeb7316ba0e5f")]
-[assembly: System.Reflection.AssemblyProductAttribute("TemperatureApi")]
-[assembly: System.Reflection.AssemblyTitleAttribute("TemperatureApi")]
+[assembly: System.Reflection.AssemblyProductAttribute("DeviceControlApp")]
+[assembly: System.Reflection.AssemblyTitleAttribute("DeviceControlApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Создано классом WriteCodeFragment MSBuild.

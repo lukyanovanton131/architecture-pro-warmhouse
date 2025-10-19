@@ -94,14 +94,11 @@ components:
           description: Статус выполнения команды
           enum: [success, error]
           example: "success"
-        message:
-          type: string
-          description: Сообщение о результате выполнения
-          example: "Command executed successfully"
         relayId:
           type: string
+          format: uuid
           description: Идентификатор реле
-          example: "relay_1"
+          example: "7219E20C-AA5E-4F7E-9251-4ACF65ADC903"
         value:
           type: number
           format: float
