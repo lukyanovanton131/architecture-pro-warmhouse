@@ -95,7 +95,7 @@
 
 ### 2. Документация 
 
-- [MessageBus](./src/api-spec/TelemetryCollectorApp.yaml)
+- [MessageBus](./src/api-spec/MessageBus.yaml)
 - [DeviceRegistryApp](./api-spec/DeviceRegistryApp.yaml)
 - [DeviceRegistryApp](./api-spec/DeviceRegistryApp.yaml)
 
