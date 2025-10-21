@@ -73,7 +73,7 @@ entity "UserDevice" {
   * device_id : NUMBER
 }
 
-"User" ||--|{ "House"
+"User" }|--|{ "House"
 "House" ||--|{ "Device"
 "Device" ||--|{ "Sensor"
 "Device" }|--|| "DeviceType"
