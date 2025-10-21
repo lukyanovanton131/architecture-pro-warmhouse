@@ -31,13 +31,8 @@ public class MessageSerializer<TMessage> : ISerializer<TMessage>, IDeserializer<
 
     public TMessage Deserialize(ReadOnlySpan<byte> data, bool isNull, SerializationContext context)
     {
-        return JsonSerializer.Deserialize<TMessage>(data, _options);
+        return (isNull) 
+            ? default 
+            : JsonSerializer.Deserialize<TMessage>(data, _options);
     }
-
-    // public TMessage? Deserialize(ReadOnlySpan<byte> data, bool isNull, SerializationContext context)
-    // {
-    // 	return (isNull)
-    // 		? default
-    // 		: (JsonSerializer.Deserialize<KafkaMessageWrapper<TMessage>>(data, _options)!).Payload;
-    // }
 }
