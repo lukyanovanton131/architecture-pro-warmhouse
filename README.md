@@ -66,11 +66,11 @@
 
 - [C4 TelemetryCollectorApp Component Diagram](./diagrams/components/TelemetryCollectorAppComponents.puml)
 
-- [C4 WebAppComponents.puml Component Diagram](./diagrams/components/WebAppComponents.puml)
+- [C4 WebAppComponents Component Diagram](./diagrams/components/WebAppComponents.puml)
 
 **Диаграмма кода (Code)**
 
-- [C4 WebAppComponents.puml Component Diagram](./diagrams/code/TelemetryCollectorApp_WorkerClass.puml)
+- [C4 TelemetryCollectorApp_WorkerClass Code Diagram](./diagrams/code/TelemetryCollectorApp_WorkerClass.puml)
 
 # Задание 3. Разработка ER-диаграммы
 
