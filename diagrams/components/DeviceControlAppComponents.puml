@@ -1,0 +1,26 @@
+@startuml
+title Device Control Service Component Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(relay, "Реле", "Реле управления устройствами")
+
+Container_Boundary(WarmhouseSystem, "Warmhouse System") {
+  Container(DeviceControlApp, "Сервис управления устройствами", "Go", "Управление пользователями своими устройствами")
+  Container(MessageBus, "Message Bus", "Kafka", "Транспорт команд управления")
+}
+
+Container(DeviceControlApp, "Device Control Service", ".net") {
+  Component(MessageBusConsumer, "MessageBusConsumer", "Чтение сообщений команд управления устройствами")
+  Component(CommandDispatcher, "CommandDispatcher", "Формирование команды и выбор исполнителя")
+  Component(CommandExecuter, "CommandExecuter", "Выполнение команды управления устройством")
+}
+
+Rel(MessageBusConsumer,MessageBus,"Читает сообщения команд управления устройств")
+Rel(MessageBusConsumer,CommandDispatcher,"Передает команду диспетчеру")
+Rel(CommandDispatcher,CommandExecuter,"Передает команду исполнителю")
+Rel(CommandExecuter,relay,"Выполненяет команду управления устройством")
+
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+title Warmhouse Context Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(user, "User", "Пользователь системы")
+Person(admin, "Admin", "Администратор системы")
+Person(sensor, "Sensor", "Датчик устройства")
+Person(relay, "Relay", "Реле управления устройствами")
+System(WarmhouseSystem, "Warmhouse System", "Система управления устройствами и сбора телеметрии")
+
+Rel(user, WarmhouseSystem, "Удаленное управление устройствами")
+Rel(user, WarmhouseSystem, "Просмотр текущих показаний датчиков")
+Rel(admin,WarmhouseSystem,"Управление системой")
+Rel(WarmhouseSystem,sensor,"Сбор данных телеметрии")
+Rel(WarmhouseSystem,relay,"Управление устройствами")
+
+
+@enduml

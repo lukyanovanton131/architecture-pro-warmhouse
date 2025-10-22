@@ -1,0 +1,260 @@
+openapi: 3.0.3
+info:
+  title: Device State Manager service
+  version: 1.0.0
+  description: >
+    API для получения сведений об устройстве:
+     - описание
+     - состав сенсоров
+     - состав управляющих реле
+     - текущие показания сенсоров
+    API для ведения реестра устройств
+     - регистрации новых устройств
+     - удаление устройств
+     - список устройств
+     - редактирование описания устройств
+
+
+paths:
+  /api/v1/users/{userId}/devices:
+    get:
+      summary: Запрос списка устройств пользователя
+      description: >
+        Возвращает список устройств котороыми может управлять пользователь:
+        - BearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: Идентификатор пользователя
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Спискок найденых в реестре устройств
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+              examples:
+                example_1:
+                  summary: Пример для получения списка устройств пользователя
+                  value:
+                    userId: "5b2f1f10-0b3d-4a61-9a9e-b4b3a0c8f9b1"
+
+        '404':
+          description: Пользователь не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+              example:
+                type: "urn:errors:USER_NOT_FOUND"
+                title: "User not found"
+                status: 404
+                detail: "Пользователь с указанным userId не найден"
+                code: "USER_NOT_FOUND"
+  post:
+    summary: Добавление в реестр устройства
+    description: >
+      Создает новый экземпляр устройства и привязывает его к пользователю
+    security:
+      - BearerAuth: [ ]
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        description: Идентификатор пользователя
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              deviceTypeId:
+                type: string
+              houseId:
+                type: string
+              serialNumber:
+                type: string
+          examples:
+            requests_users_json:
+              summary: Создаем и привязываем устройство к пользователю
+              value:
+                - deviceTypeId: '123e4567-e89b-12d3-a456-426614174000'
+                - houseId: '2EEBC0EA-E38F-44F9-A925-B020DB7BC0AC'
+                - serialNumber: '92000000001'
+    responses:
+      '200':
+        description: Устройство создано
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Device'
+            examples:
+              example_1:
+                summary: Возращает ИД нового устройства
+                value:
+                  deviceId: "43078077-6511-4EA6-807F-8784FD78029E"
+    
+    /api/v1/devices/{deviceId}:
+    get:
+      summary: Запрос информации об устройстве
+      description: >
+        Возвращает информацию об устройстве: серийный номер, тип устройства, статус, расположение:
+        - BearerAuth: []
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          description: Идентификатор устройства
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Устройство найдено в реестре
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceInfo'
+              examples:
+                example_1:
+                  summary: Пример для получения описания устройства
+                  value:
+                    requestId: "5b2f1f10-0b3d-4a61-9a9e-b4b3a0c8f9b1"
+        
+        '404':
+          description: Устройство не найдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+              example:
+                type: "urn:errors:DEVICE_NOT_FOUND"
+                title: "Device not found"
+                status: 404
+                detail: "Устройство с указанным deviceId не найдено"
+                code: "DEVICE_NOT_FOUND"
+    delete:
+      summary: Удаление устройства из реестра
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: Идентификатор пользователя
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                deviceTypeId:
+                  type: string
+                houseId:
+                  type: string
+                serialNumber:
+                  type: string
+            examples:
+              requests_users_json:
+                summary: Создаем и привязываем устройство к пользователю
+                value:
+                  - deviceTypeId: '123e4567-e89b-12d3-a456-426614174000'
+                  - houseId: '2EEBC0EA-E38F-44F9-A925-B020DB7BC0AC'
+                  - serialNumber: '92000000001'
+      responses:
+        '200':
+          description: Устройство создано
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+              examples:
+                example_1:
+                  summary: Возращает ИД нового устройства
+                  value:
+                    deviceId: "43078077-6511-4EA6-807F-8784FD78029E"
+
+components:
+
+  schemas:
+
+    # RFC 9457 (Problem Details)
+    ProblemDetail:
+      type: object
+      required: [type, title, status]
+      additionalProperties: true   
+      properties:
+        type:     { type: string, format: uri, example: "urn:errors:USER_NOT_FOUND" }
+        title:    { type: string }
+        status:   { type: integer, example: 404 }
+        detail:   { type: string, example: "Пользователь не найден." }
+        code:     { type: string, example: "USER_NOT_FOUND" }
+    
+    Device:
+      type: object
+      additionalProperties: false
+      required: [deviceId]
+      properties:
+        deviceId:
+          type: string
+          format: uuid
+          description: Идентификатор устройства
+          
+    DeviceInfo:
+      type: object
+      additionalProperties: false
+      required: [ deviceId, serialNumber, sensors, relayIds, state]
+      properties:
+        deviceId:
+          type: string
+          format: uuid
+          description: Идентификатор устройства
+        serialNumber:
+          type: string
+          description: Идентификатор устройства
+        sensors:
+          type: array
+          items: { $ref: '#/components/schemas/SensorInfo' }
+          description: Датчиков устройства
+        relayIds:
+          type: array
+          description: Идентификаторы управляющих реле
+        state:
+          type: string
+          description: Состояние датчика
+          
+    SensorInfo:
+      type: object
+      additionalProperties: false
+      required: [ id, value, location]
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Идентификатор датчика
+        value:
+          type: number
+          format: float
+          description: Показания датчика
+        location:
+          type: array
+          description: Координаты расположения датчика
+          
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - BearerAuth: []

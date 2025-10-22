@@ -1,0 +1,6 @@
+@ArchitecturePro_HostAddress = http://localhost:5296
+
+GET {{ArchitecturePro_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

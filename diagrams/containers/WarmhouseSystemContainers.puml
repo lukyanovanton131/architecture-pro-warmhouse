@@ -1,0 +1,39 @@
+@startuml
+title WarmhouseSystem Container Diagram
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(user, "User", "Пользователь системы")
+Person(admin, "Admin", "Администратор системы")
+Person(sensor, "Sensor", "Датчик устройства")
+Person(relay, "Relay", "Реле управления устройствами")
+
+System(WarmhouseSystem, "Warmhouse System", "Система управления устройствами и сбора телеметрии")
+
+Container_Boundary(WarmhouseSystem, "Warmhouse System") {
+  Container(WebApp, "Web приложение", ".net", "Обрабатывает взаимодействие с пользователем")
+  Container(DeviceControlApp, "Сервис управления устройствами", "Go", "Управление пользователями своими устройствами")
+  Container(DeviceRegistryApp, "Сервис реестра устройства", "Go", "Обновляет показатели устройств")
+  Container(TelemetryCollectorApp, "Сервис телеметрии", ".net", "Сбор данных телеметрии с устройств")
+  
+  Container(Database, "Database", "PostgreSQL", "Хранение данных с датчиков устройств")
+  Container(MessageBus, "Шина сообщений", "Kafka", "Транспорт данных телеметрии и команд управления")
+}
+
+
+Rel(user, WebApp, "Использует систему")
+Rel(admin, WebApp,"Управляет системой")
+Rel(WebApp, Database,"Чтение и запись данных пользователя")
+Rel(WebApp, DeviceControlApp,"Отправка команд управления устройствами")
+Rel(WebApp, DeviceRegistryApp,"Получение информации об устройстве")
+Rel(WebApp, Database,"Чтение и запись данных администратора")
+Rel(TelemetryCollectorApp, sensor,"Запрашивает данные телеметрии")
+Rel(TelemetryCollectorApp, MessageBus,"Запись данных телеметрии")
+Rel(DeviceControlApp, relay,"Управление устройствами")
+Rel(DeviceRegistryApp, Database,"Обновляет состояние показания датчиков")
+Rel(DeviceRegistryApp, MessageBus,"Читает данные телеметрии")
+Rel(DeviceControlApp, DeviceRegistryApp,"Читает инфо об устройстве")
+
+@enduml

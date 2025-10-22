@@ -1,0 +1,54 @@
+@startuml
+'https://plantuml.com/class-diagram
+' Настройки отображения
+hide empty methods
+hide empty fields
+skinparam class {
+    BackgroundColor<<Worker>> #LightBlue
+    BackgroundColor<<Interface>> #LightGreen
+}
+' Интерфейсы
+interface IConsumer<string, TelemetryDataMessage> {
+  + Consume()
+}
+
+interface ISender {
+  + Send<T>(IRequest<T> request, CancellationToken cancellationToken)
+}
+
+' DTO класс
+class TelemetryDataMessage {
+}
+
+' Главный класс Worker
+class Worker {
+  - {field} _consumer: IConsumer<string, TelemetryDataMessage>
+  - {field} _sender: ISender
+  + {method} ExecuteAsync(stoppingToken: CancellationToken): Task
+  + {method} StartAsync(cancellationToken: CancellationToken): Task
+  + {method} StopAsync(cancellationToken: CancellationToken): Task
+}
+
+' Внешние зависимости
+class BackgroundService {
+  + ExecuteAsync(stoppingToken: CancellationToken): Task
+}
+class CancellationToken {
+}
+
+' Связи наследования
+Worker --|> BackgroundService
+
+' Связи ассоциации
+Worker --> IConsumer : consumes
+Worker --> ISender : sends via
+Worker --> CancellationToken : uses
+IConsumer --> TelemetryDataMessage : uses
+
+
+' Нотации
+note right of Worker::ExecuteAsync
+  Protected override method
+  Continuously listens to Kafka
+  and processes messages
+end note
