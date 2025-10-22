@@ -70,7 +70,7 @@
 
 **Диаграмма кода (Code)**
 
-Добавьте одну диаграмму или несколько.
+- [C4 WebAppComponents.puml Component Diagram](./diagrams/code/TelemetryCollectorApp_WorkerClass.puml)
 
 # Задание 3. Разработка ER-диаграммы
 
